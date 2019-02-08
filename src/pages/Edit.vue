@@ -1,6 +1,10 @@
 <template>
 
-  <v-layout align-center justify-center fluid fill-height>
+    <div>
+        <form-edit :title="title" :barang="barang" :button="button" :action="updateData"></form-edit>
+    </div>
+
+  <!-- <v-layout align-center justify-center fluid fill-height>
         <v-flex xs12 sm8 md4>
             <v-card>
                <v-toolbar dark color="primary">
@@ -18,17 +22,26 @@
                 </v-card-actions>
             </v-card>
         </v-flex>
-    </v-layout>
+    </v-layout> -->
 </template>
 
 <script>
 import Axios from 'axios';
 import Swal from 'sweetalert2'
+
+import Form from '@/components/Form.vue'
+
 export default {
     data(){
         return{
-            barang:{}
+            barang:{},
+            title:"Edit Form",
+            button:"Update"
         }
+    },
+
+    components:{
+        'formEdit' : Form
     },
     /* eslint-disable */
     methods:{

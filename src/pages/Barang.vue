@@ -15,7 +15,7 @@
                         </v-btn>
                     </router-link>
 
-                    <v-btn fab dark small color="red">
+                    <v-btn fab dark small color="red" @click="deleteStok(props.item)">
                         <v-icon dark>delete</v-icon>
                     </v-btn>
             </td>
@@ -24,13 +24,12 @@
         <router-link to="/barang/input">
             <v-fab-transition>
                 <v-btn
-                    v-show="!hidden"
                     color="pink"
                     dark
                     absolute
                     top
                     right
-                    fab
+                    fab 
                 >
                     <v-icon>add</v-icon>
                 </v-btn>
@@ -66,7 +65,7 @@ export default {
     },
 
     methods:{
-        deleteStok(){
+        deleteStok(val){
              Swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -77,16 +76,21 @@ export default {
                 confirmButtonText: 'Yes, delete it!'
                 }).then((result) => {
                     if (result.value) {
-                        Axios.delete('http://localhost:8000/api/stokbarang' + data.id)
-                        .then(res=>{
+                        Axios.delete(`http://localhost:8000/api/stokbarang/${val.id}`)
+                        .then(res => {
+
+                            this.datas.splice(this.datas.indexOf(val),1)
+
                             Swal.fire(
-                            'Deleted!',
-                            'Your file has been deleted.',
-                            'success'
+                                'Deleted!',
+                                'Your file has been deleted.',
+                                'success'
                             )
+
+                            console.log(res.status + ' : ' + res.statusText)
                         })
                         .catch(ex=>{
-
+                            console.log(ex.data)
                         })
                     }
                 })

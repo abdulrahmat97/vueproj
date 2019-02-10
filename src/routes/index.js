@@ -19,16 +19,16 @@ export default new Router({
     {
       path: '/barang',
       name: 'barang',
-      component: () => import('../pages/Barang.vue')
+      component: () => import('../pages/Barang.vue'),
     },
     {
       path: '/barang/input',
-      name: 'input',
+      name: 'inputBarang',
       component: () => import('../pages/Input.vue')
     },
     {
       path:'/barang/:id/edit',
-      name:'edit',
+      name:'editBarang',
       component: () => import('@/pages/Edit.vue')
     }
   ]

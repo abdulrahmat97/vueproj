@@ -1,9 +1,8 @@
-
 <template>
     <v-content>
         <v-data-table
             :headers="headers"
-            :items="datas"
+            :items="getBarang"
         >
             <template slot="items" slot-scope="props">
             <td class="text-md-left">{{ props.item.namabarang }}</td>
@@ -42,10 +41,12 @@
 import Axios from 'axios'
 import Swal from 'sweetalert2'
 
+import { mapGetters } from 'vuex'
+
 export default {
     data(){
         return {
-            datas:[],
+            // getBarang:[],
             headers:[
                 { text: 'Nama Barang', value: 'namabarang', align:'left' },
                 { text: 'Stok', value: 'stok', align:'left' },
@@ -55,13 +56,13 @@ export default {
     },
 /* eslint-disable */
     created(){
-        Axios.get('http://localhost:8000/api/stokbarang')
-        .then( (res) => {
-            this.datas= res.data
-        })
-        .catch((e) => {
-            console.log(e.data)
-        })
+        this.$store.dispatch('fetchBarang')
+    },
+
+    computed:{
+        ...mapGetters([
+            'getBarang'
+        ])
     },
 
     methods:{
@@ -79,15 +80,13 @@ export default {
                         Axios.delete(`http://localhost:8000/api/stokbarang/${val.id}`)
                         .then(res => {
 
-                            this.datas.splice(this.datas.indexOf(val),1)
+                            this.getBarang.splice(this.getBarang.indexOf(val),1)
 
                             Swal.fire(
                                 'Deleted!',
                                 'Your file has been deleted.',
                                 'success'
                             )
-
-                            console.log(res.status + ' : ' + res.statusText)
                         })
                         .catch(ex=>{
                             console.log(ex.data)

@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import Axios from 'axios';
+
 import Swal from 'sweetalert2'
 import Form from '@/components/Form.vue'
 
@@ -44,21 +44,19 @@ export default {
     /* eslint-disable */
     methods:{
         postData(){
-            Axios.post('http://localhost:8000/api/stokbarang',{
-                namabarang:this.barang.namabarang,
-                stok:this.barang.stok
-            })
-            .then(res=>{
-                console.log(res.statusText),
+            this.$store.dispatch('inputBarang',this.barang)
+            .then(res => {
                 Swal.fire(
-                    'Data',
-                    'Berhasil Diinput',
-                    'success',
-                ),
+                'Data',
+                'Berhasil Diinput',
+                'success')
                 this.$router.push('/barang')
             })
-            .catch(ex=>{
-               console.log(ex.statusText) 
+            .catch(ex => {
+                Swal.fire(
+                'Data',
+                'Data gagal Diinput',
+                'error')
             })
 
         },

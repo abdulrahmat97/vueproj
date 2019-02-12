@@ -3,7 +3,6 @@ import Vuex from 'vuex'
 
 import axios from 'axios'
 
-import Swal from 'sweetalert2'
 
 Vue.use(Vuex)
 
@@ -26,6 +25,26 @@ export default new Vuex.Store({
   },
     /*eslint-disable*/
   actions: {
+
+    inputBarang: ({commit},payload) => {
+    
+      return new Promise((resolve, reject) => {
+        axios.post('http://localhost:8000/api/stokbarang',{
+          namabarang:payload.namabarang,
+          stok:payload.stok
+        })
+        .then(res=>{
+            console.log(res.statusText),
+            resolve(res)
+        })
+        .catch(ex=>{
+          reject(ex)
+          console.log(ex.statusText) 
+        })    
+      })
+    
+    },
+
     fetchBarang: ({commit}) => {
        return new Promise((resolve, reject) => {
         axios.get('http://localhost:8000/api/stokbarang')
@@ -40,21 +59,46 @@ export default new Vuex.Store({
         
       })
       
-     
+    },
+
+    fetch1Barang: ({commit},payload) => {
+      return new Promise((resolve, reject) => {
+        axios.get('http://localhost:8000/api/stokbarang/' + payload)
+        .then(res=>{
+            console.log(res.data)
+            resolve(res)
+        })
+        .catch(ex=>{
+            reject(ex)
+            console.log(ex.data)
+        })
+      });
+    },
+
+    updateBarang: ({commit} ,payload) => {
+      return new Promise((resolve, reject) => {
+        axios.put('http://localhost:8000/api/stokbarang/'+ payload.id,
+          payload)
+          .then(res =>{
+            resolve(res)
+          })
+          .catch(ex =>{
+            reject(ex)
+          })
+      });
     },
 
     deleteBarang: ({commit},payload) => {
-     axios.delete(`http://localhost:8000/api/stokbarang/${payload.id}`)
-      .then(res => {
-          Swal.fire(
-              'Deleted!',
-              'Your file has been deleted.',
-              'success'
-          )
-      })
-      .catch(ex=>{
-          console.log(ex.data)
-      })
+      return new Promise((resolve, reject) => {
+        axios.delete(`http://localhost:8000/api/stokbarang/${payload.id}`)
+          .then(res => {
+            resolve(res)
+          })
+          .catch(ex=>{
+            reject(ex)
+              console.log(ex.data)
+          })
+      });
     },
 
     barangMasuk: ({commit},payload) =>{
@@ -83,7 +127,7 @@ export default new Vuex.Store({
         })
           .then( res => {
             resolve(res)
-            
+
             console.log(res.data)
           })
           .catch( ex => {

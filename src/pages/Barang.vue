@@ -107,6 +107,10 @@ export default {
              })
 
     },
+
+    mounted(){
+        this.$store.dispatch('fetchBarang')
+    },
    
    computed:{
         ...mapGetters([
@@ -154,9 +158,22 @@ export default {
                 confirmButtonText: 'Yes, delete it!'
                 }).then((result) => {
                     if (result.value) {                        
-                        this.$store.dispatch('deleteBarang',this.getBarang)
-
-                        this.getBarang.splice(this.getBarang.indexOf(val),1)
+                        this.$store.dispatch('deleteBarang',val)
+                        .then(res =>{
+                            Swal.fire(
+                                'Deleted!',
+                                'Your file has been deleted.',
+                                'success'
+                            )
+                            this.getBarang.splice(this.getBarang.indexOf(val),1)
+                        })
+                        .catch(ex =>{
+                            Swal.fire(
+                                'Deleted!',
+                                'Delete Failed',
+                                'error'
+                            )
+                        })
                     }
                 })
         },

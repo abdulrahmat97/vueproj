@@ -89,9 +89,7 @@ export default {
                 valjum:0
             },
             // jumlahInput:0,
-            valMK:'',
-            
-           
+            valMK:'',           
         }
     },
 
